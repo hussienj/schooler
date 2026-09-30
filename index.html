@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الإدارة المدرسية المتكامل | التسويق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --text: #334155;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* الهيدر */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--secondary); }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { font-weight: 600; color: var(--text); transition: 0.3s; }
+        .nav-links a:hover { color: var(--secondary); }
+        .btn-contact { background: var(--primary); color: white !important; padding: 8px 20px; border-radius: 50px; }
+        .btn-contact:hover { background: var(--primary-light); }
+
+        /* قسم الترحيب */
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+            color: white; padding: 160px 0 100px; text-align: center;
+            border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .hero h1 { font-size: 3rem; font-weight: 900; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+        .hero p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px; opacity: 0.95; position: relative; }
+        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; position: relative; }
+        .btn {
+            padding: 15px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+            cursor: pointer; border: none;
+        }
+        .btn-exe { background: white; color: var(--primary); }
+        .btn-exe:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-apk { background: var(--accent); color: white; }
+        .btn-apk:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4); }
+
+        /* الأقسام */
+        .section-title {
+            text-align: center; font-size: 2.2rem; font-weight: 900;
+            color: var(--primary); margin-bottom: 50px;
+            position: relative; padding-bottom: 15px;
+        }
+        .section-title::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 4px; background: var(--secondary); border-radius: 2px;
+        }
+        .features { padding: 80px 0; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .feature-card {
+            background: white; padding: 35px 25px; border-radius: var(--radius);
+            box-shadow: var(--shadow); text-align: center; transition: 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+        .feature-card:hover { transform: translateY(-10px); border-bottom-color: var(--secondary); }
+        .feature-icon {
+            width: 70px; height: 70px; background: #e0f2fe; color: var(--secondary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 20px;
+        }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary); }
+        .feature-card p { color: var(--text-light); font-size: 0.95rem; }
+
+        /* المعرض */
+        .gallery-section { padding: 80px 0; background: #f1f5f9; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .gallery-item {
+            border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+            position: relative; aspect-ratio: 16/9; background: #cbd5e1;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* السجلات */
+        .records-section { padding: 80px 0; }
+        .records-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .record-card {
+            background: white; padding: 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .record-card:hover { transform: translateY(-5px); }
+        .record-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
+        .record-info h4 { font-size: 1rem; margin-bottom: 5px; color: var(--primary); }
+        .record-info a { font-size: 0.85rem; color: var(--secondary); font-weight: 600; }
+        .record-info a:hover { text-decoration: underline; }
+
+        /* الفوتر */
+        footer { background: #0f172a; color: #94a3b8; padding: 50px 0 20px; text-align: center; }
+        .footer-contact {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.1); padding: 15px 30px;
+            border-radius: 50px; font-size: 1.2rem; font-weight: 700;
+            color: white; margin-bottom: 30px; transition: 0.3s;
+        }
+        .footer-contact:hover { background: var(--accent); }
+        .admin-trigger {
+            color: #475569; font-size: 0.8rem; cursor: pointer;
+            margin-top: 20px; display: inline-block; transition: 0.3s;
+        }
+        .admin-trigger:hover { color: var(--secondary); }
+
+        /* لوحة التحكم */
+        .admin-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; justify-content: center;
+            align-items: center; padding: 20px;
+        }
+        .admin-overlay.active { display: flex; }
+        .admin-modal {
+            background: white; width: 100%; max-width: 800px; max-height: 90vh;
+            border-radius: 24px; overflow-y: auto; padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .close-btn {
+            position: absolute; top: 20px; left: 20px; background: #f1f5f9;
+            border: none; width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem; color: var(--danger); transition: 0.3s;
+        }
+        .close-btn:hover { background: #fee2e2; transform: rotate(90deg); }
+
+        /* شاشة تسجيل الدخول */
+        .login-screen { text-align: center; padding: 20px 0; }
+        .login-screen h2 { color: var(--primary); margin-bottom: 10px; }
+        .login-screen .subtitle { color: var(--text-light); margin-bottom: 25px; font-size: 0.95rem; }
+        .lock-icon {
+            font-size: 3rem; color: var(--primary);
+            margin-bottom: 15px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .email-display {
+            background: #e0f2fe; color: var(--primary); padding: 12px 20px;
+            border-radius: 12px; font-weight: 700; display: inline-block;
+            margin-bottom: 20px; word-break: break-all;
+            border: 2px dashed var(--secondary);
+        }
+        .login-input {
+            width: 100%; max-width: 400px; padding: 15px;
+            border: 2px solid #e2e8f0; border-radius: 12px;
+            margin-bottom: 15px; font-size: 1.1rem;
+            text-align: center; outline: none; transition: 0.3s;
+            font-family: inherit;
+        }
+        .login-input:focus { border-color: var(--secondary); }
+        .otp-input {
+            letter-spacing: 15px; font-size: 1.5rem !important;
+            font-weight: 900; direction: ltr; text-align: center;
+        }
+        .btn-login {
+            background: var(--primary); color: white; border: none;
+            padding: 15px 40px; border-radius: 12px; font-size: 1.1rem;
+            font-weight: 700; cursor: pointer; transition: 0.3s;
+            display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-login:hover:not(:disabled) { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+        .error-msg {
+            background: #fee2e2; color: #991b1b; padding: 12px;
+            border-radius: 10px; margin-bottom: 15px;
+            border-right: 4px solid var(--danger);
+            font-size: 0.9rem;
+            display: none;
+        }
+        .success-msg {
+            background: #d1fae5; color: #065f46; padding: 12px;
+            border-radius: 10px; margin-bottom: 15px;
+            border-right: 4px solid var(--accent);
+            font-size: 0.9rem;
+        }
+        .info-note {
+            background: #fef3c7; color: #92400e; padding: 12px;
+            border-radius: 10px; margin-top: 20px;
+            font-size: 0.85rem; border-right: 4px solid var(--warning);
+        }
+
+        /* لوحة التحكم */
+        #dashboard { display: none; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .dashboard-header h2 { color: var(--primary); }
+        .btn-logout { background: var(--danger); color: white; border: none; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .admin-box {
+            background: #f8fafc; padding: 25px; border-radius: 16px;
+            margin-bottom: 20px; border: 1px solid #e2e8f0;
+        }
+        .admin-box h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .admin-box h3 i { color: var(--secondary); }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .input-group input, .input-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1;
+            border-radius: 8px; font-family: inherit; outline: none;
+        }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--secondary); }
+        .btn-save {
+            background: var(--accent); color: white; border: none;
+            padding: 10px 25px; border-radius: 8px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
+        }
+        .btn-save:hover { background: #059669; }
+        .alert-msg {
+            background: #fef3c7; color: #92400e; padding: 10px;
+            border-radius: 8px; font-size: 0.85rem; margin-bottom: 15px;
+            border-right: 4px solid var(--warning);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .hero-buttons { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .admin-modal { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-school"></i>
+                <span>نظام الإدارة المدرسية</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#features">المميزات</a>
+                <a href="#gallery">صور التطبيق</a>
+                <a href="#records">السجلات</a>
+                <a href="#download" class="btn-contact">تحميل التطبيق</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- قسم الترحيب -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1 id="heroTitle">الحل الأمثل لإدارة مدرستك</h1>
+            <p id="heroDesc">نظام إلكتروني متكامل يعمل بدون إنترنت (Offline)، يدير الشعب، الدرجات، الغيابات، والسجلات الوسطى. يتواصل بين المدرس والطالب والمرشد التربوي عبر ملفات JSON.</p>
+            <div class="hero-buttons">
+                <a href="#" id="downloadExe" class="btn btn-exe">
+                    <i class="fab fa-windows"></i> تحميل نسخة الكمبيوتر (EXE)
+                </a>
+                <a href="#" id="downloadApk" class="btn btn-apk">
+                    <i class="fab fa-android"></i> تحميل نسخة الأندرويد (APK)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">لماذا تختار نظامنا؟</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-wifi"></i></div>
+                    <h3>يعمل بدون إنترنت</h3>
+                    <p>التطبيق يعمل بشكل كامل بدون الحاجة لاتصال بالإنترنت، مما يضمن استمرارية العمل في جميع الظروف.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
+                    <h3>بوابات متعددة</h3>
+                    <p>بوابات خاصة للمدير، المدرس، الطالب، المرشد التربوي، ومعاون شؤون الطلبة مع تبادل آمن للبيانات.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-file-export"></i></div>
+                    <h3>تصدير السجلات</h3>
+                    <p>إمكانية تصدير سجلات الدرجات والغيابات بصيغة PDF، Word، و Excel بضغطة زر.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>حماية وترخيص</h3>
+                    <p>التعديل على النظام مؤمن بشفرة خاصة ومفتاح ترخيص لا يملكه إلا المطور لضمان الأمان.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- معرض الصور -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">صور من داخل التطبيق</h2>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item" style="display:flex; align-items:center; justify-content:center; color:#64748b;">
+                    <i class="fas fa-image" style="font-size:3rem;"></i>
+                </div>
+                <div class="gallery-item" style="display:flex; align-items:center; justify-content:center; color:#64748b;">
+                    <i class="fas fa-image" style="font-size:3rem;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- السجلات -->
+    <section class="records-section" id="records">
+        <div class="container">
+            <h2 class="section-title">نماذج السجلات والدرجات</h2>
+            <div class="records-grid" id="recordsGrid">
+                <div class="record-card">
+                    <div class="record-icon" style="background:#ef4444;"><i class="fas fa-file-pdf"></i></div>
+                    <div class="record-info">
+                        <h4>سجل الدرجات (PDF)</h4>
+                        <a href="#">تحميل النموذج</a>
+                    </div>
+                </div>
+                <div class="record-card">
+                    <div class="record-icon" style="background:#3b82f6;"><i class="fas fa-file-word"></i></div>
+                    <div class="record-info">
+                        <h4>سجل الغيابات (Word)</h4>
+                        <a href="#">تحميل النموذج</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <h3>للطلب والاستفسار</h3>
+            <a href="https://wa.me/9647807936026" target="_blank" class="footer-contact">
+                <i class="fab fa-whatsapp"></i>
+                <span>07807936026 (العراق)</span>
+            </a>
+            <p>جميع الحقوق محفوظة &copy; 2026 - نظام الإدارة المدرسية</p>
+            <span class="admin-trigger" onclick="openAdmin()">
+                <i class="fas fa-lock"></i> لوحة تحكم مدير الموقع
+            </span>
+        </div>
+    </footer>
+
+    <!-- لوحة التحكم -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-modal">
+            <button class="close-btn" onclick="closeAdmin()"><i class="fas fa-times"></i></button>
+
+            <!-- المرحلة 1: إدخال البريد الإلكتروني -->
+            <div id="stage1" class="login-screen">
+                <i class="fas fa-envelope-open-text lock-icon"></i>
+                <h2>التحقق من الهوية</h2>
+                <p class="subtitle">أدخل البريد الإلكتروني المصرح له بالدخول</p>
+                
+                <div id="stage1Error" class="error-msg"></div>
+                
+                <input type="email" id="emailInput" class="login-input" placeholder="example@gmail.com" dir="ltr">
+                <br>
+                <button class="btn-login" id="sendOtpBtn" onclick="sendOTP()">
+                    <i class="fas fa-paper-plane"></i> إرسال رمز التحقق
+                </button>
+            </div>
+
+            <!-- المرحلة 2: إدخال رمز التحقق -->
+            <div id="stage2" class="login-screen" style="display:none;">
+                <i class="fas fa-shield-alt lock-icon" style="color: var(--accent);"></i>
+                <h2>رمز التحقق</h2>
+                <p class="subtitle">تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني</p>
+                
+                <div class="email-display">
+                    <i class="fas fa-envelope"></i> hussienal.ambaree@gmail.com
+                </div>
+
+                <div id="stage2Error" class="error-msg"></div>
+                <div id="stage2Success" class="success-msg" style="display:none;">
+                    <i class="fas fa-check-circle"></i> تم إرسال الرمز بنجاح!
+                </div>
+
+                <input type="text" id="otpInput" class="login-input otp-input" 
+                       placeholder="------" maxlength="6" inputmode="numeric" dir="ltr">
+                <br>
+                <button class="btn-login" onclick="verifyOTP()">
+                    <i class="fas fa-sign-in-alt"></i> دخول
+                </button>
+                <br><br>
+                <button onclick="backToEmail()" style="background:none; border:none; color:var(--text-light); cursor:pointer; font-family:inherit;">
+                    <i class="fas fa-arrow-right"></i> تغيير البريد الإلكتروني
+                </button>
+
+                <div class="info-note">
+                    <i class="fas fa-clock"></i> الرمز صالح لمدة 5 دقائق فقط. تحقق من صندوق الوارد أو مجلد الرسائل غير المرغوب فيها.
+                </div>
+            </div>
+
+            <!-- لوحة التحكم الفعلية -->
+            <div id="dashboard">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h2>
+                    <div>
+                        <span style="color:var(--accent); font-weight:700; font-size:0.9rem;">
+                            <i class="fas fa-circle" style="font-size:0.5rem;"></i> متصل: hussienal.ambaree
+                        </span>
+                        <button class="btn-logout" onclick="logout()" style="margin-right:10px;">تسجيل الخروج</button>
+                    </div>
+                </div>
+
+                <div class="alert-msg">
+                    <i class="fas fa-info-circle"></i> <strong>ملاحظة:</strong> لا يمكن رفع ملفات EXE أو APK مباشرة بسبب قيود حجم التخزين. ارفعها على Google Drive أو Mediafire وضع الرابط هنا.
+                </div>
+
+                <div class="admin-box">
+                    <h3><i class="fas fa-edit"></i> تعديل نصوص الصفحة الرئيسية</h3>
+                    <div class="input-group">
+                        <label>العنوان الرئيسي:</label>
+                        <input type="text" id="inputHeroTitle" placeholder="عنوان الصفحة">
+                    </div>
+                    <div class="input-group">
+                        <label>الوصف:</label>
+                        <textarea id="inputHeroDesc" rows="3" placeholder="وصف التطبيق"></textarea>
+                    </div>
+                    <button class="btn-save" onclick="saveTexts()">حفظ النصوص</button>
+                </div>
+
+                <div class="admin-box">
+                    <h3><i class="fas fa-download"></i> روابط تحميل التطبيق</h3>
+                    <div class="input-group">
+                        <label>رابط ملف EXE (الكمبيوتر):</label>
+                        <input type="text" id="inputExeUrl" placeholder="https://example.com/app.exe" dir="ltr">
+                    </div>
+                    <div class="input-group">
+                        <label>رابط ملف APK (الأندرويد):</label>
+                        <input type="text" id="inputApkUrl" placeholder="https://example.com/app.apk" dir="ltr">
+                    </div>
+                    <button class="btn-save" onclick="saveLinks()">حفظ الروابط</button>
+                </div>
+
+                <div class="admin-box">
+                    <h3><i class="fas fa-images"></i> إضافة صور توضيحية</h3>
+                    <div class="input-group">
+                        <input type="file" id="uploadImage" accept="image/*" multiple>
+                    </div>
+                    <button class="btn-save" onclick="saveImages()">رفع الصور</button>
+                </div>
+
+                <div class="admin-box">
+                    <h3><i class="fas fa-file-upload"></i> رفع السجلات (PDF / Word / Excel)</h3>
+                    <div class="input-group">
+                        <label>عنوان السجل:</label>
+                        <input type="text" id="recordTitle" placeholder="مثال: سجل درجات الصف الأول">
+                    </div>
+                    <div class="input-group">
+                        <label>اختر الملف:</label>
+                        <input type="file" id="uploadRecord" accept=".pdf,.doc,.docx,.xls,.xlsx">
+                    </div>
+                    <button class="btn-save" onclick="saveRecord()">رفع السجل</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        // ===================================================
+        // ⚠️⚠️⚠️ إعدادات EmailJS - يجب تعديلها بمعلوماتك ⚠️⚠️⚠️
+        // ===================================================
+        const EMAILJS_PUBLIC_KEY = "mKhvKt2wKim0b1Wfa";
+        const EMAILJS_SERVICE_ID = "service_893eo2a";
+        const EMAILJS_TEMPLATE_ID = "template_8c0gwtq";
+        // ===================================================
+
+        // ========== الإعدادات الأساسية ==========
+        const ALLOWED_EMAIL = "hussienal.ambaree@gmail.com"; // البريد المصرح له فقط
+        const STORAGE_KEY = "schoolSystemData";
+        const SESSION_KEY = "adminSession";
+        const OTP_VALIDITY = 5 * 60 * 1000; // 5 دقائق
+
+        let generatedOTP = null;
+        let otpGeneratedTime = null;
+
+        // تهيئة EmailJS
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        }
+
+        // ========== فتح/إغلاق لوحة التحكم ==========
+        function openAdmin() {
+            document.getElementById("adminOverlay").classList.add("active");
+            
+            // التحقق من وجود جلسة نشطة
+            const session = localStorage.getItem(SESSION_KEY);
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    if (Date.now() - sessionData.loginTime < 24 * 60 * 60 * 1000) {
+                        // الجلسة صالحة لمدة 24 ساعة
+                        showDashboard();
+                        return;
+                    } else {
+                        localStorage.removeItem(SESSION_KEY);
+                    }
+                } catch(e) { localStorage.removeItem(SESSION_KEY); }
+            }
+            
+            backToEmail();
+        }
+
+        function closeAdmin() {
+            document.getElementById("adminOverlay").classList.remove("active");
+        }
+
+        function backToEmail() {
+            document.getElementById("stage1").style.display = "block";
+            document.getElementById("stage2").style.display = "none";
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("emailInput").value = "";
+            document.getElementById("otpInput").value = "";
+            hideError("stage1Error");
+            hideError("stage2Error");
+            document.getElementById("stage2Success").style.display = "none";
+        }
+
+        function showDashboard() {
+            document.getElementById("stage1").style.display = "none";
+            document.getElementById("stage2").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+            loadAdminData();
+        }
+
+        function logout() {
+            localStorage.removeItem(SESSION_KEY);
+            backToEmail();
+            closeAdmin();
+        }
+
+        // ========== إرسال رمز التحقق ==========
+        async function sendOTP() {
+            const emailInput = document.getElementById("emailInput").value.trim().toLowerCase();
+            const errorEl = document.getElementById("stage1Error");
+            const sendBtn = document.getElementById("sendOtpBtn");
+
+            // التحقق من البريد
+            if (!emailInput) {
+                showError("stage1Error", "الرجاء إدخال البريد الإلكتروني");
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput)) {
+                showError("stage1Error", "صيغة البريد الإلكتروني غير صحيحة");
+                return;
+            }
+
+            // ⚠️ التحقق من أن البريد هو المصرح له فقط
+            if (emailInput !== ALLOWED_EMAIL.toLowerCase()) {
+                showError("stage1Error", "⛔ هذا البريد غير مصرح له بالدخول إلى لوحة التحكم");
+                return;
+            }
+
+            // توليد رمز عشوائي من 6 أرقام
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            otpGeneratedTime = Date.now();
+
+            // تعطيل الزر أثناء الإرسال
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            hideError("stage1Error");
+
+            try {
+                // إرسال البريد عبر EmailJS
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: ALLOWED_EMAIL,
+                    otp_code: generatedOTP,
+                    time: new Date().toLocaleString('ar-EG')
+                });
+
+                // الانتقال للمرحلة 2
+                document.getElementById("stage1").style.display = "none";
+                document.getElementById("stage2").style.display = "block";
+                document.getElementById("stage2Success").style.display = "block";
+                document.getElementById("otpInput").focus();
+
+                // إخفاء رسالة النجاح بعد 5 ثوان
+                setTimeout(() => {
+                    document.getElementById("stage2Success").style.display = "none";
+                }, 5000);
+
+            } catch (error) {
+                console.error("EmailJS Error:", error);
+                showError("stage1Error", "❌ فشل إرسال البريد. تحقق من إعدادات EmailJS أو من اتصالك بالإنترنت.");
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال رمز التحقق';
+            }
+        }
+
+        // ========== التحقق من رمز OTP ==========
+        function verifyOTP() {
+            const otpInput = document.getElementById("otpInput").value.trim();
+
+            if (!generatedOTP || !otpGeneratedTime) {
+                showError("stage2Error", "الرجاء طلب رمز جديد");
+                return;
+            }
+
+            // التحقق من صلاحية الرمز الزمنية
+            if (Date.now() - otpGeneratedTime > OTP_VALIDITY) {
+                showError("stage2Error", "⏰ انتهت صلاحية الرمز. اطلب رمزاً جديداً");
+                generatedOTP = null;
+                return;
+            }
+
+            if (otpInput.length !== 6) {
+                showError("stage2Error", "الرجاء إدخال الرمز المكوّن من 6 أرقام");
+                return;
+            }
+
+            if (otpInput === generatedOTP) {
+                // نجاح!
+                localStorage.setItem(SESSION_KEY, JSON.stringify({
+                    email: ALLOWED_EMAIL,
+                    loginTime: Date.now()
+                }));
+                generatedOTP = null;
+                otpGeneratedTime = null;
+                showDashboard();
+                hideError("stage2Error");
+            } else {
+                showError("stage2Error", "❌ الرمز غير صحيح. حاول مرة أخرى");
+            }
+        }
+
+        // ========== دوال مساعدة ==========
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ' + message;
+            el.style.display = "block";
+        }
+
+        function hideError(elementId) {
+            document.getElementById(elementId).style.display = "none";
+        }
+
+        // السماح بإدخال الأرقام فقط في OTP
+        document.addEventListener("DOMContentLoaded", function() {
+            const otpInput = document.getElementById("otpInput");
+            if (otpInput) {
+                otpInput.addEventListener("input", function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                otpInput.addEventListener("keypress", function(e) {
+                    if (e.key === "Enter") verifyOTP();
+                });
+            }
+            const emailInput = document.getElementById("emailInput");
+            if (emailInput) {
+                emailInput.addEventListener("keypress", function(e) {
+                    if (e.key === "Enter") sendOTP();
+                });
+            }
+        });
+
+        // ========== إدارة البيانات (نفس السابق) ==========
+        function loadAdminData() {
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            if (data.heroTitle) document.getElementById("inputHeroTitle").value = data.heroTitle;
+            if (data.heroDesc) document.getElementById("inputHeroDesc").value = data.heroDesc;
+            if (data.exeUrl) document.getElementById("inputExeUrl").value = data.exeUrl;
+            if (data.apkUrl) document.getElementById("inputApkUrl").value = data.apkUrl;
+        }
+
+        function saveTexts() {
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            data.heroTitle = document.getElementById("inputHeroTitle").value;
+            data.heroDesc = document.getElementById("inputHeroDesc").value;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            alert("✅ تم حفظ النصوص بنجاح!");
+            loadWebsiteData();
+        }
+
+        function saveLinks() {
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            data.exeUrl = document.getElementById("inputExeUrl").value;
+            data.apkUrl = document.getElementById("inputApkUrl").value;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            alert("✅ تم حفظ روابط التحميل بنجاح!");
+            loadWebsiteData();
+        }
+
+        function saveImages() {
+            const files = document.getElementById("uploadImage").files;
+            if (files.length === 0) return alert("الرجاء اختيار صور أولاً");
+
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            if (!data.images) data.images = [];
+
+            let loadedCount = 0;
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    data.images.push({ src: e.target.result, name: file.name });
+                    loadedCount++;
+                    if (loadedCount === files.length) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        alert("✅ تم رفع الصور بنجاح!");
+                        loadWebsiteData();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function saveRecord() {
+            const file = document.getElementById("uploadRecord").files[0];
+            const title = document.getElementById("recordTitle").value;
+            if (!file || !title) return alert("الرجاء اختيار ملف وكتابة عنوان");
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                if (!data.records) data.records = [];
+                data.records.push({ title: title, src: e.target.result, type: file.type });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                alert("✅ تم رفع السجل بنجاح!");
+                loadWebsiteData();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadWebsiteData() {
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+            if (data.heroTitle) document.getElementById("heroTitle").innerText = data.heroTitle;
+            if (data.heroDesc) document.getElementById("heroDesc").innerText = data.heroDesc;
+
+            const exeBtn = document.getElementById("downloadExe");
+            const apkBtn = document.getElementById("downloadApk");
+            if (data.exeUrl) exeBtn.href = data.exeUrl;
+            if (data.apkUrl) apkBtn.href = data.apkUrl;
+
+            const gallery = document.getElementById("galleryGrid");
+            if (data.images && data.images.length > 0) {
+                gallery.innerHTML = "";
+                data.images.forEach(img => {
+                    const div = document.createElement("div");
+                    div.className = "gallery-item";
+                    div.innerHTML = `<img src="${img.src}" alt="${img.name}">`;
+                    gallery.appendChild(div);
+                });
+            }
+
+            const recordsGrid = document.getElementById("recordsGrid");
+            if (data.records && data.records.length > 0) {
+                recordsGrid.innerHTML = "";
+                data.records.forEach(rec => {
+                    let iconClass = "fa-file";
+                    let color = "#64748b";
+                    if (rec.type.includes("pdf")) { iconClass = "fa-file-pdf"; color = "#ef4444"; }
+                    else if (rec.type.includes("word")) { iconClass = "fa-file-word"; color = "#3b82f6"; }
+                    else if (rec.type.includes("excel") || rec.type.includes("sheet")) { iconClass = "fa-file-excel"; color = "#10b981"; }
+
+                    const div = document.createElement("div");
+                    div.className = "record-card";
+                    div.innerHTML = `
+                        <div class="record-icon" style="background:${color};"><i class="fas ${iconClass}"></i></div>
+                        <div class="record-info">
+                            <h4>${rec.title}</h4>
+                            <a href="${rec.src}" download="${rec.title}">تحميل الملف</a>
+                        </div>
+                    `;
+                    recordsGrid.appendChild(div);
+                });
+            }
+        }
+
+        window.onload = loadWebsiteData;
+    </script>
+</body>
+</html>
